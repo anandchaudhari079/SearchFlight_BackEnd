@@ -17,7 +17,7 @@ namespace search_flight_backend.Controllers
         [HttpGet("GetOriginAirports")]
         public async Task<IActionResult> GetOriginAirports()
         {
-            _logger.LogInformation("Request for origin airports is recived");
+            _logger.LogInformation("Request for origin airports is received");
 
             try
             {
