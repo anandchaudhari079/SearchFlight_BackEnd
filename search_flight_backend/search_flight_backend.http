@@ -1,0 +1,6 @@
+@search_flight_backend_HostAddress = http://localhost:5117
+
+GET {{search_flight_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
