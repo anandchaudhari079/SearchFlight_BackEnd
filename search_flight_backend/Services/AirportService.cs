@@ -7,7 +7,6 @@ namespace search_flight_backend.Services
     {
         private readonly IMemoryCache _cache;
         private readonly Dictionary<string, List<string>> _routes;
-        private static readonly List<string> _origins = new() { "Chennai", "Banglore", "Delhi", "Kolkata", "Mumbai" };
 
         public AirportService(IMemoryCache cache)
         {
@@ -33,7 +32,7 @@ namespace search_flight_backend.Services
             return Task.FromResult(_cache.GetOrCreate("originAirports", entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
-                return _origins;
+                return _routes.Keys.ToList();
             })!);
         }
 
