@@ -1,0 +1,7 @@
+{
+    "Mumbai": [ "Chennai", "Banglore", "Delhi", "Kolkata" ],
+    "Chennai": [ "Delhi", "Banglore", "Mumbai", "Kolkata" ],
+    "Banglore": [ "Delhi", "Chennai", "Mumbai", "Kolkata" ],
+    "Delhi": [ "Mumbai", "Banglore", "Chennai", "Kolkata" ],
+    "Kolkata": [ "Delhi", "Banglore", "Mumbai", "Chennai" ]
+}

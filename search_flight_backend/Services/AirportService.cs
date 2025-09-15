@@ -1,24 +1,31 @@
-﻿// File: Services/AirportService.cs
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System.Text.Json;
 
 namespace search_flight_backend.Services
 {
     public class AirportService : IAirportService
     {
         private readonly IMemoryCache _cache;
+        private readonly Dictionary<string, List<string>> _routes;
         private static readonly List<string> _origins = new() { "Chennai", "Banglore", "Delhi", "Kolkata", "Mumbai" };
-        private static readonly Dictionary<string, List<string>> _routes = new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "Mumbai", new List<string> { "Chennai", "Banglore", "Delhi", "Kolkata" } },
-            { "Chennai", new List<string> { "Delhi", "Banglore", "Mumbai", "Kolkata" } },
-            { "Banglore", new List<string> { "Delhi", "Chennai", "Mumbai", "Kolkata" } },
-            { "Delhi", new List<string> { "Mumbai", "Banglore", "Chennai", "Kolkata" } },
-            { "Kolkata", new List<string> { "Delhi", "Banglore", "Mumbai", "Chennai" } }
-        };
 
         public AirportService(IMemoryCache cache)
         {
             _cache = cache;
+            _routes = LoadRoutesFromJson();
+        }
+
+        private Dictionary<string, List<string>> LoadRoutesFromJson()
+        {
+            var filePath = Path.Combine(AppContext.BaseDirectory, "Data", "routes.json");
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("Routes data file not found.", filePath);
+
+            var json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
         }
 
         public Task<List<string>> GetOriginAirportsAsync()
